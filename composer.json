@@ -1,0 +1,20 @@
+{
+    "name": "gebruederheitz/wp-simple-rest",
+    "description": "A trait to help you set up REST endpoints in Wordpress.",
+    "type": "library",
+    "license": "GPL-3.0-only",
+    "autoload": {
+        "psr-4": {
+            "Gebruederheitz\\": "Gebruederheitz/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Andreas Maros",
+            "email": "andreas.maros@gebruederheitz.de"
+        }
+    ],
+    "require": {
+	    "php": "^7.3"
+    }
+}
