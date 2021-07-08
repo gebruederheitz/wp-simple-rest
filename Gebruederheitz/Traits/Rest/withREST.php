@@ -1,6 +1,6 @@
 <?php
 
-namespace Gebruederheitz\Traits;
+namespace Gebruederheitz\Traits\Rest;
 
 
 trait withREST

@@ -5,7 +5,7 @@
     "license": "GPL-3.0-only",
     "autoload": {
         "psr-4": {
-            "Gebruederheitz\\": "Gebruederheitz/"
+            "Gebruederheitz\\Traits\\Rest\\": "Gebruederheitz/Traits/Rest"
         }
     },
     "authors": [
