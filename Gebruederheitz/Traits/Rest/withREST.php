@@ -2,7 +2,6 @@
 
 namespace Gebruederheitz\Traits\Rest;
 
-
 trait withREST
 {
     public static $restNamespaceBase = 'ghwp';
