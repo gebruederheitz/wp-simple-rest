@@ -5,7 +5,7 @@
     "license": "GPL-3.0-only",
     "autoload": {
         "psr-4": {
-            "Gebruederheitz\\Traits\\Rest\\": "Gebruederheitz/Traits/Rest/"
+            "Gebruederheitz\\Wordpress\\Rest\\": "src/"
         }
     },
     "authors": [

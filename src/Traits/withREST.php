@@ -1,6 +1,8 @@
 <?php
 
-namespace Gebruederheitz\Traits\Rest;
+namespace Gebruederheitz\Wordpress\Rest\Traits;
+
+use Gebruederheitz\Wordpress\Rest\RestRoute;
 
 trait withREST
 {
@@ -24,15 +26,17 @@ trait withREST
      */
     public static function registerRestRoutes ()
     {
-        foreach (static::getRestRoutes() as $options) {
-            register_rest_route(self::getRestNamespace(), $options['route'], $options['config']);
+        foreach (static::getRestRoutes() as $routeDefinition) {
+            [$route, $options] = self::parseRoute($routeDefinition);
+            register_rest_route(self::getRestNamespace(), $route, $options);
         }
     }
 
     public function registerInstanceRestRoutes()
     {
-        foreach ($this->getInstanceRestRoutes() as $options) {
-            register_rest_route(self::getRestNamespace(), $options['route'], $options['config']);
+        foreach ($this->getInstanceRestRoutes() as $routeDefinition) {
+            [$route, $options] = self::parseRoute($routeDefinition);
+            register_rest_route(self::getRestNamespace(), $route, $options);
         }
     }
 
@@ -46,9 +50,15 @@ trait withREST
      *   'name' => (string) 'A Human-Readable Name for the endpoint',
      * ];
      *
-     * @return array
+     * Alternatively you can return an array of RestRoute objects.
+     *
+     * @return array[] | RestRoute[]
      */
     abstract protected static function getRestRoutes (): array;
+
+    /**
+     * @return array[] | RestRoute[]
+     */
     abstract protected function getInstanceRestRoutes(): array;
 
     /**
@@ -60,8 +70,9 @@ trait withREST
     public static function getRestEndpoints(): array
     {
         $out = [];
-        foreach (static::getRestRoutes() as $options) {
-            $out[$options['name']] = get_rest_url(null, self::getRestNamespace() . $options['route']);
+        foreach (static::getRestRoutes() as $routeDefinition) {
+            [$route, $options, $name] = self::parseRoute($routeDefinition);
+            $out[$name] = get_rest_url(null, self::getRestNamespace() . $route);
         }
         return $out;
     }
@@ -70,8 +81,9 @@ trait withREST
     {
         $out = [];
 
-        foreach ($this->getInstanceRestRoutes() as $options) {
-            $out[$options['name']] = get_rest_url(null, self::getRestNamespace() . $options['route']);
+        foreach ($this->getInstanceRestRoutes() as $routeDefinition) {
+            [$route, $options, $name] = self::parseRoute($routeDefinition);
+            $out[$name] = get_rest_url(null, self::getRestNamespace() . $route);
         }
 
         return array_merge($out, self::getRestEndpoints());
@@ -79,6 +91,25 @@ trait withREST
 
     public static function getRestNamespace() {
         return static::$restNamespaceBase . '/v' . static::$restApiVersion;
+    }
+
+    protected static function parseRoute($routeDefinition): array
+    {
+        $route = '';
+        $options = [];
+        $name = '';
+
+        if (is_subclass_of($routeDefinition, RestRoute::class)) {
+            $route = $routeDefinition->getPath();
+            $options = $routeDefinition->getConfig();
+            $name = $routeDefinition->getName();
+        } else {
+            $route = $routeDefinition['route'];
+            $options = $routeDefinition['config'];
+            $name = $routeDefinition['name'];
+        }
+
+        return [$route, $options, $name];
     }
 
 }
