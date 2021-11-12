@@ -6,7 +6,13 @@ _A trait to help you set up REST endpoints in Wordpress._
 
 Helps you with registering and processing REST endpoints in Wordpress projects.
 
-# Installation
+ - [Installation](#installation)
+ - [Usage](#usage)
+   - [Getting the defined routes' full URLs](#getting-the-defined-routes-full-urls)
+   - [Changing the route base path](#changing-the-route-base-path)
+ - [Upgrading](#upgrading)
+
+## Installation
 
 via composer:
 ```shell
@@ -15,10 +21,12 @@ via composer:
 
 Make sure you have Composer autoload or an alternative class loader present.
 
-# Usage
+## Usage
 
 ```php
 use Gebruederheitz\Traits\withREST;
+/* optional */
+use Gebruederheitz\Wordpress\Rest\RestRoute;
 
 class MyClass {
     // use the trait
@@ -29,12 +37,34 @@ class MyClass {
         $this->initInstanceRestApi();
     }
     
+    // Callbacks for your routes must be public
     public function myRestCallback() {}
     
     // Define your Routes by implementing the abstract method
     public function getInstanceRestRoutes()
     {
         return [
+            // Using the RestRoute helper object
+            RestRoute::create(
+                'A description of what your route does.',
+                '/rest-example'
+            )
+                ->setCallback([$this, 'myRestCallback'])
+                ->setMethods('POST')
+                ->addArgument(
+                    'parameter_one',
+                    'A description of what the argument is for.',
+                    'a default value',
+                    'string',
+                    [$this, 'sanitizeParameterOne'],
+                    [$this, 'validateParameterOne']
+                )
+                ->addArgument(
+                    'other_param',
+                    'A parameter that is essential to this route.',
+                )
+            ,
+            // Using the legacy array format
             [
                 'name' => 'A description of what your route does',
                 'route' => '/rest-example',
@@ -54,6 +84,26 @@ class MyClass {
                     ]
                 ]
             ],
+            // Restricting access
+            RestRoute::create(
+                'Do dangerous things with the database',
+                '/danger-zone/database',
+            )
+                ->setCallback([$this, 'restDangerousDbOperation'])
+                // only users with 'install_plugins' capabilities
+                ->allowOnlyAdmins()
+                // or only users with 'edit_posts' capabilities
+                ->allowOnlyEditors()
+                // or a custom callback allowing you to check for capabilities
+                // ...with a closure
+                ->setPermissionCallback(function() {
+                    return current_user_can('read_private_pages');
+                })
+                // ...with a class method
+                ->setPermissionCallback([$this, 'canUserAccessDbDangerZone'])
+                // ...with a static class method
+                ->setPermissionCallback([self::class, 'canUserAccessStatic'])
+            ,
         ];
     }
     
@@ -142,3 +192,17 @@ class MyClass {
 ```
 
 Your routes will now be available at `/wp-json/my-rest-routes/v1/rest-example`.
+
+
+## Upgrading
+
+### To version 2.x
+
+From v1.x to v2.0 the namespaces used in the library changed. You will need to
+update your `use` statements to reflect those changes:
+```php
+/* BEFORE */
+use Gebruederheitz\Traits\Rest\withREST
+/* AFTER */
+use Gebruederheitz\Wordpress\Rest\Traits\withREST
+```
