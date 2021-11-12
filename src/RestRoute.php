@@ -22,6 +22,19 @@ class RestRoute
     }
 
     /**
+     * Builder method for fluent creation.
+     *
+     * @param string $name
+     * @param string $path
+     *
+     * @return static
+     */
+    public static function create(string $name, string $path): self
+    {
+        return new RestRoute($name, $path);
+    }
+
+    /**
      * @param string|array $allowedMethods
      *
      * @return $this
