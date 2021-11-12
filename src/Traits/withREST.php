@@ -99,7 +99,7 @@ trait withREST
         $options = [];
         $name = '';
 
-        if (is_subclass_of($routeDefinition, RestRoute::class)) {
+        if (is_a($routeDefinition, RestRoute::class)) {
             $route = $routeDefinition->getPath();
             $options = $routeDefinition->getConfig();
             $name = $routeDefinition->getName();
