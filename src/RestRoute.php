@@ -111,8 +111,6 @@ class RestRoute
             $arg['type'] = $type;
         }
 
-        $this->config['args'][$name] = $arg;
-
         if ($sanitizeCallback !== null) {
             $arg['sanitize_callback'] = $sanitizeCallback;
         }
@@ -120,6 +118,8 @@ class RestRoute
         if ($validateCallback !== null) {
             $arg['validate_callback'] = $validateCallback;
         }
+
+        $this->config['args'][$name] = $arg;
 
         return $this;
     }
