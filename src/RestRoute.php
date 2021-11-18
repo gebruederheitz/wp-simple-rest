@@ -90,6 +90,21 @@ class RestRoute
         return $this;
     }
 
+    /**
+     * Set the permission_callback so this route effectively becomes public,
+     * available to anyone.
+     *
+     * @return $this
+     */
+    public function allowAnyone(): self
+    {
+        $this->config['permission_callback'] = function() {
+            return true;
+        };
+
+        return $this;
+    }
+
     public function addArgument(
         string $name,
         string $description,

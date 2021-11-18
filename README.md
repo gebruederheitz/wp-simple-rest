@@ -51,6 +51,7 @@ class MyClass {
             )
                 ->setCallback([$this, 'myRestCallback'])
                 ->setMethods('POST')
+                ->allowAnyone()
                 ->addArgument(
                     'parameter_one',
                     'A description of what the argument is for.',
@@ -169,6 +170,31 @@ class MyClass {
         ];
     }
 }
+```
+
+### Setting the route's access
+
+You should always explicitly define your route's access privileges, otherwise
+Wordpress will wiggle its finger in your face. You can choose one of the
+convenience methods provided by `RestRoute` or supply your own callback:
+
+```php
+RestRoute::create('Name', '/path')
+    // public route
+    ->allowAnyone()
+    // or only users with 'install_plugins' capabilities
+    ->allowOnlyAdmins()
+    // or only users with 'edit_posts' capabilities
+    ->allowOnlyEditors()
+    // or a custom callback allowing you to check for capabilities
+    // ...with a closure
+    ->setPermissionCallback(function() {
+        return current_user_can('read_private_pages');
+    })
+    // ...with a class method
+    ->setPermissionCallback([$this, 'canUserAccessDbDangerZone'])
+    // ...with a static class method
+    ->setPermissionCallback([self::class, 'canUserAccessStatic'])
 ```
 
 ### Getting the defined routes' full URLs
