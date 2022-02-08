@@ -1,6 +1,6 @@
 {
   "name": "@gebruederheitz/wp-simple-rest-util",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Utilities for the gebruederheitz/wp-simple-rest PHP composer package",
   "main": "",
   "engines": {
