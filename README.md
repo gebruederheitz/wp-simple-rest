@@ -232,3 +232,15 @@ use Gebruederheitz\Traits\Rest\withREST
 /* AFTER */
 use Gebruederheitz\Wordpress\Rest\Traits\withREST
 ```
+
+
+
+## Development
+
+### Dependencies
+
+- PHP >= 7.4
+- [Composer 2.x](https://getcomposer.org)
+- [NVM](https://github.com/nvm-sh/nvm) and nodeJS LTS (v16.x)
+- Nice to have: GNU Make (or drop-in alternative)
+

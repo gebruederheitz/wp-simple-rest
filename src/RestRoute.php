@@ -23,11 +23,6 @@ class RestRoute
 
     /**
      * Builder method for fluent creation.
-     *
-     * @param string $name
-     * @param string $path
-     *
-     * @return static
      */
     public static function create(string $name, string $path): self
     {
@@ -68,7 +63,7 @@ class RestRoute
      */
     public function allowOnlyEditors(): self
     {
-        $this->config['permission_callback'] = function() {
+        $this->config['permission_callback'] = function () {
             return current_user_can('edit_posts');
         };
 
@@ -83,7 +78,7 @@ class RestRoute
      */
     public function allowOnlyAdmins(): self
     {
-        $this->config['permission_callback'] = function() {
+        $this->config['permission_callback'] = function () {
             return current_user_can('install_plugins');
         };
 
@@ -98,7 +93,7 @@ class RestRoute
      */
     public function allowAnyone(): self
     {
-        $this->config['permission_callback'] = function() {
+        $this->config['permission_callback'] = function () {
             return true;
         };
 
@@ -112,10 +107,9 @@ class RestRoute
         string $type = null,
         callable $sanitizeCallback = null,
         callable $validateCallback = null
-    ): self
-    {
+    ): self {
         $arg = [
-            'description' => $description
+            'description' => $description,
         ];
 
         if ($default !== null) {
@@ -176,5 +170,4 @@ class RestRoute
             'config' => $this->config,
         ];
     }
-
 }

@@ -15,7 +15,7 @@ trait withREST
         add_action('rest_api_init', [static::class, 'registerRestRoutes']);
     }
 
-    public function initInstanceRestApi ()
+    public function initInstanceRestApi()
     {
         add_action('rest_api_init', [$this, 'registerInstanceRestRoutes']);
     }
@@ -24,7 +24,7 @@ trait withREST
      * Loops over items provided through getRestRoutes() and registers a REST API
      * route for each.
      */
-    public static function registerRestRoutes ()
+    public static function registerRestRoutes()
     {
         foreach (static::getRestRoutes() as $routeDefinition) {
             [$route, $options] = self::parseRoute($routeDefinition);
@@ -54,7 +54,7 @@ trait withREST
      *
      * @return array[] | RestRoute[]
      */
-    abstract protected static function getRestRoutes (): array;
+    abstract protected static function getRestRoutes(): array;
 
     /**
      * @return array[] | RestRoute[]
@@ -89,7 +89,8 @@ trait withREST
         return array_merge($out, self::getRestEndpoints());
     }
 
-    public static function getRestNamespace() {
+    public static function getRestNamespace()
+    {
         return static::$restNamespaceBase . '/v' . static::$restApiVersion;
     }
 
@@ -111,5 +112,4 @@ trait withREST
 
         return [$route, $options, $name];
     }
-
 }
