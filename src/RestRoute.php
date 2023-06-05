@@ -106,7 +106,8 @@ class RestRoute
         $default = null,
         string $type = null,
         callable $sanitizeCallback = null,
-        callable $validateCallback = null
+        callable $validateCallback = null,
+        bool $required = false
     ): self {
         $arg = [
             'description' => $description,
@@ -126,6 +127,10 @@ class RestRoute
 
         if ($validateCallback !== null) {
             $arg['validate_callback'] = $validateCallback;
+        }
+
+        if ($required === true) {
+            $arg['required'] = true;
         }
 
         $this->config['args'][$name] = $arg;
