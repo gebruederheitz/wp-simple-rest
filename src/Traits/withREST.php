@@ -3,6 +3,8 @@
 namespace Gebruederheitz\Wordpress\Rest\Traits;
 
 use Gebruederheitz\Wordpress\Rest\RestRoute;
+use WP_Error;
+use WP_REST_Response;
 
 trait withREST
 {
@@ -111,5 +113,35 @@ trait withREST
         }
 
         return [$route, $options, $name];
+    }
+
+    /**
+     * @return WP_REST_Response
+     */
+    protected static function withStatus(
+        int $status,
+        $data = []
+    ) {
+        return new WP_REST_Response(
+            $data,
+            $status,
+        );
+    }
+
+    /**
+     * Helper for return errors with or without details in a unified format.
+     *
+     * @return WP_Error
+     */
+    protected static function restError(
+        int $status,
+        string $type,
+        string $message,
+        array $details = []
+    ) {
+        return new WP_Error($type, $message, [
+            'status' => $status,
+            'details' => $details,
+        ]);
     }
 }
