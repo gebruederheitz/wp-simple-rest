@@ -118,14 +118,9 @@ trait withREST
     /**
      * @return WP_REST_Response
      */
-    protected static function withStatus(
-        int $status,
-        $data = []
-    ) {
-        return new WP_REST_Response(
-            $data,
-            $status,
-        );
+    protected static function withStatus(int $status, $data = [])
+    {
+        return new WP_REST_Response($data, $status);
     }
 
     /**
