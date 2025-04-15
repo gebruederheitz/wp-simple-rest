@@ -57,12 +57,12 @@ trait withREST
      *
      * Alternatively you can return an array of RestRoute objects.
      *
-     * @return array[] | RestRoute[]
+     * @return RouteDefinitionArray[] | RestRoute[]
      */
     abstract protected static function getRestRoutes(): array;
 
     /**
-     * @return array[] | RestRoute[]
+     * @return RouteDefinitionArray[] | RestRoute[]
      */
     abstract protected function getInstanceRestRoutes(): array;
 
