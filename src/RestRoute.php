@@ -2,18 +2,23 @@
 
 namespace Gebruederheitz\Wordpress\Rest;
 
+/**
+ * @phpstan-type RouteConfiguration array{methods: string|string[], callback: ?callable, permission_callback: ?callable, args: array<string, mixed>}
+ * @phpstan-type RouteDefinitionArray array{name: string, route: string, config: RouteConfiguration}
+ */
 class RestRoute
 {
-    protected $path = '';
+    protected string $path = '';
 
-    protected $config = [
+    /** @var RouteConfiguration */
+    protected array $config = [
         'methods' => 'GET',
         'callback' => null,
         'permission_callback' => null,
         'args' => [],
     ];
 
-    protected $name = '';
+    protected string $name = '';
 
     public function __construct(string $name, string $path)
     {
@@ -30,7 +35,7 @@ class RestRoute
     }
 
     /**
-     * @param string|array $allowedMethods
+     * @param string|array<string> $allowedMethods
      *
      * @return $this
      */
@@ -100,6 +105,9 @@ class RestRoute
         return $this;
     }
 
+    /**
+     * @param mixed $default
+     */
     public function addArgument(
         string $name,
         string $description,
@@ -138,6 +146,9 @@ class RestRoute
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $args
+     */
     public function addArguments(array $args): self
     {
         $this->config['args'] = array_merge($this->config['args'], $args);
@@ -145,6 +156,9 @@ class RestRoute
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $args
+     */
     public function replaceArguments(array $args): self
     {
         $this->config['args'] = $args;
@@ -157,6 +171,9 @@ class RestRoute
         return $this->name;
     }
 
+    /**
+     * @return RouteConfiguration
+     */
     public function getConfig(): array
     {
         return $this->config;
@@ -167,6 +184,9 @@ class RestRoute
         return $this->path;
     }
 
+    /**
+     * @return RouteDefinitionArray
+     */
     public function toArray(): array
     {
         return [

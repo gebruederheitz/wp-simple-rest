@@ -15,13 +15,24 @@
         }
     ],
     "require": {
-	    "php": ">=7.3"
+	    "php": ">=7.4"
     },
     "require-dev": {
-        "phpstan/phpstan": "^1.4",
-        "szepeviktor/phpstan-wordpress": "^1.0"
+        "phpstan/phpstan": "^1.12",
+        "szepeviktor/phpstan-wordpress": "^1.3",
+        "wecodemore/wpstarter": "~2.0",
+        "johnpbloch/wordpress-core": "6.6.*@stable"
     },
     "scripts": {
-        "lint": "phpstan analyse -c .phpstan.neon"
+        "lint": "phpstan --memory-limit=2G analyse -c .phpstan.neon"
+    },
+    "config": {
+        "allow-plugins": {
+            "johnpbloch/wordpress-core-installer": true
+        }
+    },
+    "extra": {
+        "wordpress-content-dir": ".wp/wordpress/wp-content",
+        "wordpress-install-dir": ".wp/wordpress"
     }
 }

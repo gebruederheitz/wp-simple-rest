@@ -6,18 +6,21 @@ use Gebruederheitz\Wordpress\Rest\RestRoute;
 use WP_Error;
 use WP_REST_Response;
 
+/**
+ * @phpstan-import-type RouteDefinitionArray from RestRoute
+ */
 trait withREST
 {
-    public static $restNamespaceBase = 'ghwp';
-    public static $restApiVersion = '1';
+    public static string $restNamespaceBase = 'ghwp';
+    public static string $restApiVersion = '1';
 
-    public static function initRestApi()
+    public static function initRestApi(): void
     {
         // Register REST API route
         add_action('rest_api_init', [static::class, 'registerRestRoutes']);
     }
 
-    public function initInstanceRestApi()
+    public function initInstanceRestApi(): void
     {
         add_action('rest_api_init', [$this, 'registerInstanceRestRoutes']);
     }
@@ -26,7 +29,7 @@ trait withREST
      * Loops over items provided through getRestRoutes() and registers a REST API
      * route for each.
      */
-    public static function registerRestRoutes()
+    public static function registerRestRoutes(): void
     {
         foreach (static::getRestRoutes() as $routeDefinition) {
             [$route, $options] = self::parseRoute($routeDefinition);
@@ -34,7 +37,7 @@ trait withREST
         }
     }
 
-    public function registerInstanceRestRoutes()
+    public function registerInstanceRestRoutes(): void
     {
         foreach ($this->getInstanceRestRoutes() as $routeDefinition) {
             [$route, $options] = self::parseRoute($routeDefinition);
@@ -91,11 +94,15 @@ trait withREST
         return array_merge($out, self::getRestEndpoints());
     }
 
-    public static function getRestNamespace()
+    public static function getRestNamespace(): string
     {
         return static::$restNamespaceBase . '/v' . static::$restApiVersion;
     }
 
+    /**
+     * @param RestRoute|array $routeDefinition
+     * @return RouteDefinitionArray
+     */
     protected static function parseRoute($routeDefinition): array
     {
         $route = '';
@@ -115,25 +122,22 @@ trait withREST
         return [$route, $options, $name];
     }
 
-    /**
-     * @return WP_REST_Response
-     */
-    protected static function withStatus(int $status, $data = [])
-    {
+    protected static function withStatus(
+        int $status,
+        $data = []
+    ): WP_REST_Response {
         return new WP_REST_Response($data, $status);
     }
 
     /**
      * Helper for return errors with or without details in a unified format.
-     *
-     * @return WP_Error
      */
     protected static function restError(
         int $status,
         string $type,
         string $message,
         array $details = []
-    ) {
+    ): WP_Error {
         return new WP_Error($type, $message, [
             'status' => $status,
             'details' => $details,
