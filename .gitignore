@@ -3,3 +3,5 @@
 util/node_modules/
 .task/
 .wp/
+.phpunit.cache/
+.phpunit.result.cache

@@ -13,6 +13,13 @@ tasks:
     internal: true
     cmd: npm run lint
 
+  test:
+    desc: 'Run the PHPUnit test suite.'
+    deps:
+      - install-dependencies
+    cmds:
+      - composer test
+
   prettier:
     desc: Make prettier process and fix all files in src/
     dir: util

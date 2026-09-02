@@ -112,9 +112,9 @@ class RestRoute
         string $name,
         string $description,
         $default = null,
-        string $type = null,
-        callable $sanitizeCallback = null,
-        callable $validateCallback = null,
+        ?string $type = null,
+        ?callable $sanitizeCallback = null,
+        ?callable $validateCallback = null,
         bool $required = false
     ): self {
         $arg = [
